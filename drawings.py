@@ -1,3 +1,4 @@
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -115,3 +116,42 @@ plt.show()
 
 
 
+
+
+
+
+#
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the Ackley function for 3D surfaces
+def ackley(v1, v2, v3, a=20, b=0.2, c=2 * np.pi):
+    r = np.sqrt(v1**2 + v2**2 + v3**2)
+    return -a * np.exp(-b * r) - np.exp(np.cos(c * v1) + np.cos(c * v2) + np.cos(c * v3)) + a + np.exp(1)
+
+# Half-Sphere S^2 Parameterization
+phi = np.linspace(0, np.pi / 2, 100)  # Polar angle
+theta = np.linspace(0, 2 * np.pi, 100)  # Azimuthal angle
+phi, theta = np.meshgrid(phi, theta)
+x_sphere = np.sin(phi) * np.cos(theta)
+y_sphere = np.sin(phi) * np.sin(theta)
+z_sphere = np.cos(phi)
+
+# Calculate Ackley function on the sphere
+ackley_sphere = ackley(x_sphere, y_sphere, z_sphere)
+
+# Plot the half-sphere
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(111, projection='3d')
+surface = ax.plot_surface(
+    x_sphere, y_sphere, z_sphere, facecolors=plt.cm.viridis(ackley_sphere / np.max(ackley_sphere)),
+    rstride=1, cstride=1, antialiased=False, alpha=0.8
+)
+ax.set_title('Ackley Function on Half-Sphere $S^2$', fontsize=14)
+ax.set_xlabel('$v_1$', fontsize=12)
+ax.set_ylabel('$v_2$', fontsize=12)
+ax.set_zlabel('$v_3$', fontsize=12)
+
+plt.show()
